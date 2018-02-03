@@ -1,0 +1,36 @@
+drop procedure if exists UpdateBestsellers;
+
+DELIMITER $$
+
+CREATE procedure UpdateBestsellers()
+begin
+	declare RENT_FREQ_ID int;
+	declare BOOKS_RENT int;
+	declare FINISHED int default 0;
+    declare RENTS_FREQUENCY cursor for select BOOK_ID from rents;
+    declare continue handler for not found set FINISHED = 1;
+    open RENTS_FREQUENCY;
+    while(FINISHED = 0) do
+		select FINISHED; 
+		fetch RENTS_FREQUENCY into RENT_FREQ_ID;
+        if(FINISHED = 0) then
+			select count(*) from rents
+            where BOOK_ID = RENT_FREQ_ID
+			into BOOKS_RENT;
+            select BOOKS_RENT;
+            if(BOOKS_RENT>2) then
+				UPDATE books SET BESTSELLER = true WHERE BOOKS.BOOK_ID = RENT_FREQ_ID;
+			else
+				UPDATE books SET BESTSELLER = false WHERE BOOKS.BOOK_ID = RENT_FREQ_ID;
+            end if;
+			commit;
+		end if;
+        end while;
+        close RENTS_FREQUENCY;      
+end $$
+
+DELIMITER ;
+
+call UpdateBestsellers();
+
+SELECT * FROM kodilla_course.books;
