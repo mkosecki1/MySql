@@ -85,5 +85,16 @@ end$$
 DELIMITER ;
 
 
+DELIMITER $$
+
+create trigger BOOKS_DELETE after delete on books
+for each row
+begin
+	insert into books_aud (EVENT_DATE, EVENT_TYPE, BOOK_ID)
+		values (curtime(), "DELETE", OLD.BOOK_ID);
+end$$
+    
+DELIMITER ;
+
 
 
