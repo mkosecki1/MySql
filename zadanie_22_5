@@ -9,3 +9,16 @@ commit;
 
 create view BESTSELLERS_COUNT as
 select sum(BESTSELLER) as suma from books;
+
+DELIMITER $$
+
+create event BESTSELLERS_STATS
+	on schedule every 1 minute
+    do 
+		begin
+			call UpdateBestsellers();
+            insert into stats (STAT_DATE, STAT, VALUE)
+			values (curdate(), "BESTSELLERS", (SELECT * FROM kodilla_course.bestsellers_count));
+		end$$
+
+DELIMITER ;
