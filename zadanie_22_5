@@ -17,7 +17,7 @@ create event BESTSELLERS_STATS
     do 
 		begin
 			call UpdateBestsellers();
-            insert into stats (STAT_DATE, STAT, VALUE)
+            		insert into stats (STAT_DATE, STAT, VALUE)
 			values (curdate(), "BESTSELLERS", (SELECT * FROM kodilla_course.bestsellers_count));
 		end$$
 
