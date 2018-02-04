@@ -7,3 +7,5 @@ create table STATS (
 );
 commit;
 
+create view BESTSELLERS_COUNT as
+select sum(BESTSELLER) as suma from books;
