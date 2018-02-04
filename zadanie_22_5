@@ -1,0 +1,9 @@
+create table STATS (
+	STAT_ID INT(11) auto_increment not null,
+	STAT_DATE DATETIME NOT NULL,
+	STAT VARCHAR(20) NOT NULL,
+	VALUE INT(11) NOT NULL,
+    primary key(STAT_ID)
+);
+commit;
+
